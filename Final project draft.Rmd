@@ -1,0 +1,114 @@
+---
+title: "Final Project "
+author: "Elie GNASSOU"
+date: "5/4/2022"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+#**FINAL PROJECT DRAFT**
+
+## Introduction 
+
+**What**: For my final project, I originally wanted to find out the cost of health care in us prior covid and post covid to determine if COVID-19 has affected the price of healthcare at all or not and by how much compare to the previous years. But after looking for the data, I could not really find what I needed, so I have decided to put my on the focus the national spending to analyze hospital spending from 1960 to 2022. I have decided to analyze the spending on national insurance and find out if there is a correlation between them. 
+
+ 
+
+**Why**: I think it would be interesting to see if there is an increase in the hospital spending and see if it affects the price of health insurance as all.
+
+**How**: I will try to explore datasets about national health care and expenditure cost and use R studio to build a dashboard that show spending on hospital over the year and how much money spent on private insurance as well 
+
+**Minimal scenario**: I explore the datasets but find just a little change in hospital spending and health insurance   
+
+**Optimistic scenario**: I find the datasets and run my analysis and find that there is a substantial change in hospital and health insurance spending over the year   
+
+**Ambitious scenario**: I explore the datasets and find that there is a relationship between hospital spending and health insurance. 
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##**TOPIC FROM CLASS**
+Topic 1: Summarizing data 
+ ## Using the steps from homework 1, 2,3 to examine data 
+ ## Anaylyzing data by creating Histogram and plot
+ 
+Topic 2: Github 
+ 
+ 
+Topic 3: Linear Models  
+
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+```{r }
+read.csv("nationalspending.csv")
+```
+
+
+
+```{r }
+summary(nationalspending)
+```
+
+
+```{r }
+dim(nationalspending)
+```
+
+
+```{r }
+length(dim(nationalspending))
+```
+
+
+```{r }
+names(nationalspending)
+head(nationalspending)
+tail(nationalspending)
+```
+
+
+```{r }
+plot(nationalspending$Year, nationalspending$Hospital_spending)
+```
+
+
+
+```{r }
+plot(nationalspending$Year, nationalspending$`Home_health_care ($)`)
+```
+
+
+```{r }
+plot(nationalspending$Year, nationalspending$`Personal_healthcare ($)`)
+```
+
+
+```{r }
+plot(nationalspending$Year, nationalspending$`Private_Health_Insurance ($)`)
+```
+
+```{r }
+cor(nationalspending$Hospital_spending, nationalspending$Year)
+
+```
+
+```{r }
+hist( x = nationalspending$Hospital_spending)
+```
+
+
+
+## CONCLUSION 
