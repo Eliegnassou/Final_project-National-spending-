@@ -7,56 +7,45 @@ output:
   pdf_document: default
 ---
 
-#**FINAL PROJECT DRAFT**
+**FINAL PROJECT DRAFT**
+
 
 ## Introduction 
 
-**What**: For my final project, I originally wanted to find out the cost of health care in us prior covid and post covid to determine if COVID-19 has affected the price of healthcare at all or not and by how much compare to the previous years. But after looking for the data, I could not really find what I needed, so I have decided to put my on the focus the national spending to analyze hospital spending from 1960 to 2022. I have decided to analyze the spending on national insurance and find out if there is a correlation between them. 
+
+
+**What**: 
+For my final project, I originally wanted to find out the cost of health care in us prior covid and post covid to determine if COVID-19 has affected the price of healthcare at all or not and by how much compare to the previous years. But after looking for a data set, I could  not really find what I needed, so I have decided to put my focus on the national spending on healthcare to analyse the amount on money spent on hospital, home_healthcare,personal healthcare, money paid out of pocket and private insurance from 1960 to 2020. So I have decided to analyze the data to see if there is any significant increase or decrease in the spending since 1960 and if there is a correlation between year and each category.
 
  
-
-**Why**: I think it would be interesting to see if there is an increase in the hospital spending and see if it affects the price of health insurance as all.
-
-**How**: I will try to explore datasets about national health care and expenditure cost and use R studio to build a dashboard that show spending on hospital over the year and how much money spent on private insurance as well 
-
-**Minimal scenario**: I explore the datasets but find just a little change in hospital spending and health insurance   
-
-**Optimistic scenario**: I find the datasets and run my analysis and find that there is a substantial change in hospital and health insurance spending over the year   
-
-**Ambitious scenario**: I explore the datasets and find that there is a relationship between hospital spending and health insurance. 
+**Why**: I think it would be interesting to see if there is any increase  or decrease over time in each categories of spending and possibly find events that may have impacted them.
 
 
+**How**: I will try to explore datasets about national spending on healthcare  and expenditure cost and use R studio to make analysis and visualization that show spending over time and how much money spent on healthcare.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+**Minimal scenario**: I explore the datasets but find there is no change in the spending over time.   
 
-##**TOPIC FROM CLASS**
-Topic 1: Summarizing data 
- ## Using the steps from homework 1, 2,3 to examine data 
- ## Anaylyzing data by creating Histogram and plot
- 
-Topic 2: Github 
- 
- 
-Topic 3: Linear Models  
+**Optimistic scenario**: I find the datasets and run my analysis and find that there is a substantial change in the spending over time and observe an increase or decrease in each spending category each year since 1960 to 2020
 
- 
- 
- 
- 
+**Ambitious scenario**: I explore the datasets and find that there is a relationship between years and healthcare spending which prove that healthcare cost will continue to go up or down year after year which increase the spending in each category cited above.
 
 
 
+# BODY 
 
+This data set is from the national spending on healthcare. it contains 61 observations and 6 variables that i will use to run my analysis and explains the findings.
 
-
+## Loading and Reading the dataset
 
 ```{r }
+library(tidyverse)
+library(readr)
+nationalspending <- read_csv("nationalspending.csv")
+View(nationalspending)
 read.csv("nationalspending.csv")
 ```
 
-
+### Summary of the dataset
 
 ```{r }
 summary(nationalspending)
@@ -78,37 +67,226 @@ names(nationalspending)
 head(nationalspending)
 tail(nationalspending)
 ```
+### LINEAR REGRESSION 
 
+ **Year VS hospital_spending Analysis**
+ 
+Graphical Analysis
 
 ```{r }
 plot(nationalspending$Year, nationalspending$Hospital_spending)
 ```
+After plotting the variables, we first observe that as year increase hospital spending increase too. we also observe hospital spending stay the same from 1960 to 1980 then rapidly increase from 1980 to 2020.many factors may have impacted this, among them we can talk about demographics. since 1980 represents the beginnings of millennial and  Gen Y. This can also be explained the increase of spending with new parents welcoming their new born.
 
 
+
+Testing for correlations 
+ 
+```{r}
+cor(nationalspending$Hospital_spending, nationalspending$Year)
+```
+As we could see Cor= 0.94 is close to 1 which means there is a strong positive linear relationship between year and hospital spending.
+
+**Linear Regression Diagnostics**
+
+```{r}
+HS_model <- lm(nationalspending$Hospital_spending ~ nationalspending$Year)
+summary(HS_model)
+```
+Both multiple R square and adjusted are > 80 percent , Based on the plot, linear model statistics and correlation coefficient for the relationship between hospital spending  and year  is evident that the relationship is positive, linear and relatively strong.
+
+
+
+
+**Year VS Home_health_care Analysis**
+
+Graphical Analysis
 
 ```{r }
 plot(nationalspending$Year, nationalspending$`Home_health_care ($)`)
 ```
 
 
+We can observe from the plot that there is a correlation between Home health care and year. As year increase the spending of home healthcare increase too where it stay constant until 1980 then increase from 1990 to fall a little from  1996 to 2001 and re increase until 2020. this can be explained also demographics. 1996 represents the year of last millennials born which means less expenses on healthcare.
+
+
+
+```{r}
+cor(nationalspending$`Home_health_care ($)`, nationalspending$Year)
+```
+The relationship between home health care and year can be considered positive and strong as the correlation coefficient 0.9130859 turns out to be closer to 1
+
+
+
+
+
+```{r}
+HH_model <- lm(nationalspending$`Home_health_care ($)` ~ nationalspending$Year)
+summary(HH_model)
+```
+Both multiple R square and adjusted are > 80 percent , Based on the plot, linear model statistics and correlation coefficient for the relationship between home healthcare and year  is evident that the relationship is positive, linear and relatively strong.
+
+
+## YEAR VS PERSONAL_healthcare 
+
+Graphical Analysis
+
 ```{r }
 plot(nationalspending$Year, nationalspending$`Personal_healthcare ($)`)
 ```
+by looking at this plot we can first see that we have a pretty strong positive correlation between personal healthcare spending and year because it keeps increasing from 1960 to 2020and  remain constant until 1980 then  slightly increase until 1990 to rise again until now. This can be explains by demographics, technology innovation and increase of income.
 
 
+```{r}
+cor(nationalspending$`Personal_healthcare ($)`, nationalspending$Year)
+```
+The relationship between personal health care and year can be considered positive and strong as the correlation coefficient 0.9399102 turns out to be closer to 1.
+
+```{r}
+PHh_model <- lm(nationalspending$`Personal_healthcare ($)` ~ nationalspending$Year)
+summary(PHh_model)
+```
+
+Both multiple R square and adjusted are > 80 percent which is pretty close 100% , Based on the plot, linear model statistics and correlation coefficient for the relationship between home healthcare and year  is evident that the relationship is positive, linear and relatively strong.
+
+## YEAR VS Out_of_pocket
+
+Graphical Analysis
+
+```{r}
+plot(nationalspending$Year, nationalspending$`Out_of_pocket ($)`)
+```
+Looking at the pattern we can that as year increase, expense out of pocket in health care increase too. we can then affirm that there is a positive correlation between both variables. Other than that, we observe three slightly pattern where the out of pocket remain steady then start increase. from 1960 to 1990 which can be explained by demographic increase in birth ( millennials), from 2000 to 2010 can explain by the great recession 2008 then 2010 to 2020 which was affected by both the recession and recently covid 19.
+
+
+
+
+Testing for correlation between variables
+ 
+```{r}
+cor(nationalspending$`Out_of_pocket ($)`, nationalspending$Year)
+```
+The relationship between out of pocket expense and year can be considered positive and strong as the correlation coefficient 0.9701507 turns out to be closer to 1.
+
+
+Linear regression analysis 
+
+```{r}
+OP_model <- lm(nationalspending$`Out_of_pocket ($)` ~ nationalspending$Year)
+summary(OP_model)
+```
+
+
+Both multiple R square and adjusted are > 90 percent which is pretty close 100% , Based on the plot, linear model statistics and correlation coefficient for the relationship between Out of pocket expense in healthcare and year is evident that the relationship is positive, linear and relatively strong.
+
+## Year VS Private_health_Insurance 
+ 
+ Graphical Analysis
+ 
 ```{r }
 plot(nationalspending$Year, nationalspending$`Private_Health_Insurance ($)`)
 ```
 
-```{r }
-cor(nationalspending$Hospital_spending, nationalspending$Year)
+At first look we can say that the relationship between private health insurance and year is strong and positive. we can also observe that spending on private kept increasing from 1960 until 2019. This can be explained by demographics and new insurance business because the more population increase the more people are available on the market. The decrease that can observe from 2019 can be explained by covid 19 which has cause many death and also also people were not working so thehy will not be abale to pay their monthly insurance. 
 
+
+
+Testing for correlation between variables
+
+```{r }
+cor(nationalspending$`Private_Health_Insurance ($)`, nationalspending$Year)
 ```
+With a correlation of 0.9432591, we can say there is strong positive  relationship between Private insurance and year.
+
+Linear regression analysis 
+```{r}
+PH_model <- lm(nationalspending$`Private_Health_Insurance ($)` ~ nationalspending$Year)
+summary(PH_model)
+```
+
+
+Both multiple R square and adjusted are > 80 percent which is pretty close 100% , Based on the plot, linear model statistics and correlation coefficient for the relationship between private health insurance and year is evident that the relationship is positive, linear and relatively strong.
+
+##  Histogram of all variables 
+
+
 
 ```{r }
 hist( x = nationalspending$Hospital_spending)
+hist( x = nationalspending$`Home_health_care ($)`)
+hist( x = nationalspending$`Personal_healthcare ($)`)
+hist( x = nationalspending$`Out_of_pocket ($)`)
+hist( x = nationalspending$`Private_Health_Insurance ($)`)
 ```
+
+## VISUALAZATION OF ALL SPENDING IN A CHART PIE 
+
+```{r}
+HS <- sum(nationalspending$Hospital_spending)
+HH <- sum(nationalspending$`Home_health_care ($)`)
+PHC <- sum(nationalspending$`Personal_healthcare ($)`)
+OP <- sum(nationalspending$`Out_of_pocket ($)`)
+PH <- sum(nationalspending$`Private_Health_Insurance ($)`)
+```
+
+
+
+```{r}
+Slices <- c("HS","HH","PHC","OP","PH")
+lbls <- c("Hospitalspending", "homehealthcare", "personalhealthcare", "Outofpocket", "privatehealthins")
+
+```
+
+
+
+
+## Topic 1 : R markdown 
+
+ R Markdown is a file format that help you turn your analysis in high quality documents, reports, presentations and dashboard. During the beginning of the semester, we have learned how to use R markdown through class and the assignments. I created a new R Markdown that I am using for this project. it will help make my finding clean and neat in readable pdf documents. I will know my R markdown file once I am done into a pdf format.
+ 
+## Topic 2: Summarizing data 
+
+* Using the steps from homework 1, 2,3 to examine data 
+ ## Analyzing data by creating Histogram and plot
+ ## Data Cleaning 
+ 
+## Topic 3: Github 
+
+
+During class, which I utilized to turn in the draft of this final project. I created a new repository on Github, copied the link, pasted it into a new project on R, then committed it, and lastly pushed the commit to Github using an authentication token. I have minimal experience with Git, so I followed the instructions on Canvas. In the past, I learned how to use Git with Terminal, but using it with R is new to me. In the past, I pushed projects to Git through terminal commands. Although we did not spend much time with Github during this semester, I plan to explore it further outside of class.
+ 
+ 
+## Topic 4: Linear Regression
+
+Linear regression is commonly used type of predictive analysis. It is a statistical approach for modeling the relationship between a dependent variable and a given set of independent variables. In our case, we will used the simple linear regression because we want to summarize and study the relationships between two variables. During class, We have learned how to use to conduct our analysis. I have created a model for each category spending and year to test if there was a relationship. To do so, I have tested the correlation first then plotting to see if visualize it. I have to admit that working with liner regression was a bit difficult but going back to lecture and notes help me to run the model and analyze it.
+
+## Topic 5: Histogram & Pie Chart 
+
+Although pie charts are not really recommended in R, I wanted to give a visual representation of all spending in histogram and  pie so that the reader can have an visual idea of much was spent on each spending category all this year. I could not make the code for the pie since it was not working for me. here the I tried to use
+
+Slices <- c("HS","HH","PHC","OP","PH")
+lbls <- c("Hospitalspending", "homehealthcare", "personalhealthcare", "Outofpocket", "privatehealthins")
+
+pie("Slices", "labels" = lbls, main="National_spending on healthcare")
 
 
 
 ## CONCLUSION 
+
+
+after testing all the models ( HH_model, HS_model, PH!_model, OP_model and PH_model ) we can affirm that each spending category increase as year increase too. this is due to many factors such as economics, demographics, pandemic and many others. As for determining if the spending will continue to increase or not. We can not confidently affirm that we will increase or not. However, when looking at different plot we see that the trend continue to incline in hospital spending, home health care , personal insurance and started to decline in out of pocket healthcare, private insurance. TO be more confident about predicting it, we will need to run more analysis which was my goal but As I was trying other analysis method such Polynomial regression or ridge regression I could not really get any result. 
+Overall, I can confidently say have more some progress using R studio. At the beginnings of this class I was completely new to it and had no idea if  I was going to even able to do this on my own but the homework, lecture and research definitely gave a footsteps in R and I am even eager to learn more and more codes to be able to apply my knowledge in a workplace. This is definitely a millstone in R studio journey.
+
+
+
+
+
+
+## references
+
+https://www.upgrad.com/blog/types-of-regression-models-in-machine-learning/#:~:text=Linear%20regression%20and%20logistic%20regression,most%20prominent%20techniques%20of%20regression.
+https://www.statology.org/correlation-vs-association/
+https://www.geeksforgeeks.org/create-multiple-pie-charts-using-ggplot2-in-r/?ref=rp
+https://www.usatoday.com/story/money/2020/09/06/the-worlds-most-important-event-every-year-since-1920/113604790/       
+
+https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/NationalHealthExpendData/NationalHealthAccountsHistorical.html
